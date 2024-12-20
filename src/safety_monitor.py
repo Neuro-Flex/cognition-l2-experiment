@@ -8,9 +8,19 @@ class SafetyMonitor:
         self.ethical_violations = []
 
     def monitor(self, state: CognitiveState) -> bool:
-        is_safe = True
+        self.safety_violations = []
+        self.ethical_violations = []
+        
         if not state.safety_status:
-            self.safety_violations.append({'type': 'safety', 'details': 'General failure'})
+            self.safety_violations.append({
+                'type': 'safety',
+                'details': 'General failure'
+            })
+        
         if state.ethical_compliance < 0.7:
-            self.ethical_violations.append({'type': 'ethics', 'value': state.ethical_compliance})
-        return is_safe
+            self.ethical_violations.append({
+                'type': 'ethics',
+                'value': state.ethical_compliance
+            })
+            
+        return len(self.safety_violations) == 0 and len(self.ethical_violations) == 0
